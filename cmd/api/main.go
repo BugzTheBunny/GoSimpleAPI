@@ -1,18 +1,15 @@
 package main
 
 import (
-	"log"
-
-	"github.com/BugzTheBunny/GoSimpleAPI/internal/middleware"
-	"github.com/BugzTheBunny/GoSimpleAPI/internal/server"
+	"github.com/BugzTheBunny/GoSimpleAPI/internal/db"
+	"github.com/BugzTheBunny/GoSimpleAPI/internal/routes"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	app := server.NewApp()
+	db.InitDB()
+	server := gin.Default()
+	routes.RegisterRoutes(server)
 
-	app.Use(middleware.LoggingMiddleware)
-
-	server.RegisterRoutes(app)
-
-	log.Fatal(app.ListenAndServe(":8080"))
+	server.Run(":8080")
 }
